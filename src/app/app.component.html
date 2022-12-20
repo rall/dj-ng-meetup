@@ -1,6 +1,6 @@
 <h1>Reactive Form Demo</h1>
 
-<form [formGroup]="fruitForm">
+<form [formGroup]="fruitForm" (submit)="submitSubject.next()">
   <label for="name">name:</label>
   <input id="name" type="text" formControlName="name" />
 
@@ -9,6 +9,8 @@
 
   <label for="name">date:</label>
   <input id="date" type="date" formControlName="date" />
+
+  <input type="submit" />
 </form>
 
 <section>
