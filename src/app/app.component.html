@@ -1,18 +1,3 @@
 <h1>Reactive Form Demo</h1>
 
-<form [formGroup]="fruitForm" (submit)="submitSubject.next()">
-  <label for="name">name:</label>
-  <input id="name" type="text" formControlName="name" />
-
-  <label for="name">fruit:</label>
-  <input id="fruit" type="text" formControlName="fruit" />
-
-  <label for="name">date:</label>
-  <input id="date" type="date" formControlName="date" />
-
-  <input type="submit" />
-</form>
-
-<section>
-  <p>OUTPUT:</p>
-</section>
+<app-mapper></app-mapper>

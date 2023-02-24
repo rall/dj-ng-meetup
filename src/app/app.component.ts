@@ -12,6 +12,10 @@ import {
   share,
   switchMap,
   withLatestFrom,
+  startWith,
+  take,
+  ReplaySubject,
+  BehaviorSubject,
 } from 'rxjs';
 
 type MCAParams = Params & { username: string };
@@ -40,26 +44,33 @@ export class AppComponent implements OnInit {
 
   // prettier-ignore
   fruit$ = this.fruitForm.get('fruit').valueChanges.pipe(
-    delay(200),
+    startWith("pomegranate"),
     map((fruit) => `it's a ${fruit}`),
   );
 
   //prettier-ignore
-  private fruitSubmit$ = this.submitSubject.pipe(
+  fruitSubmit$ = this.submitSubject.pipe(
     withLatestFrom(this.fruit$, (_, fruit) => fruit),
     tap({
-      next: (n) => console.log(n),
+      next: (n) => console.log(Date.now(), n),
       error: (e) => console.error(`uh oh something went wrong`, e),
       complete: () => console.error('combinatation completed'),
     }),
+    take(1),
+    share(),
   )
 
+  fruitSubject = new Subject();
+
   ngOnInit() {
-    this.fruit$.subscribe(console.info);
-    this.submitSubject.subscribe(console.info);
+    this.fruitSubmit$.subscribe(this.fruitSubject);
 
-    this.fruitSubmit$.subscribe(console.warn);
+    this.fruitSubmit$.subscribe((next) => {
+      console.log(`first op: ${next}`);
+      //
+      // operation
+      //
+    });
 
-    // this.validFruit$.subscribe(console.log);
   }
 }
