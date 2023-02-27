@@ -1,0 +1,18 @@
+li {
+  border-bottom: 1px solid rgba(179, 179, 179, 0.397);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  user-select: none;
+}
+  
+li span {
+  padding: 0.5rem;
+}
+
+:host {
+  display: block;
+  border: 1px solid green;
+  width: 400px;
+  height: 400px;
+}
