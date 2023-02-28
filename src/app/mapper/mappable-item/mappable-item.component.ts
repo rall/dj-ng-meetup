@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fromEvent, map, ReplaySubject, Subject } from 'rxjs';
+import { debounceTime, fromEvent, map, merge, ReplaySubject, share, shareReplay, Subject, switchMap } from 'rxjs';
 
 @Component({
   template: ''
@@ -12,20 +12,34 @@ export class MappableItemComponent {
     fromEvent(handle.nativeElement, "mouseout").pipe(
       map(_ => `out ${Date.now()}`),
     ).subscribe(this.mouseOut$)
-    this.top$.next(handle.nativeElement.offsetTop)
-    this.left$.next(handle.nativeElement.offsetLeft)
+    this.nativeElement$.next(handle.nativeElement)
   }
-
-  constructor(private elem: ElementRef) {
-  }
-
-  get position() {
-    return [this.elem.nativeElement.offsetLeft, this.elem.nativeElement.offsetTop]
-  }
-
-  top$ = new ReplaySubject<number>(1)
-  left$ = new ReplaySubject<number>(1)
 
   mouseOver$ = new Subject<string>
   mouseOut$ = new Subject<string>
+
+  private nativeElement$ = new ReplaySubject<HTMLDivElement>(1);
+
+  private resize$ = fromEvent(window, 'resize').pipe(
+    debounceTime(10)
+  )
+
+  private scroll$ = fromEvent(window, 'scroll').pipe(
+    debounceTime(10)
+  )
+
+  private nativeElementAfterRedraw$ = merge(this.resize$, this.scroll$).pipe(
+    switchMap(_ => this.nativeElement$),
+  )
+
+  private element$ = merge(this.nativeElement$, this.nativeElementAfterRedraw$).pipe(
+    shareReplay(1)
+  )
+
+  coordinate$ = this.element$.pipe(
+    map<HTMLDivElement, [number, number]>(element => [
+      element.offsetTop + (element.offsetHeight / 2) - 2,
+      element.offsetLeft + (element.offsetWidth / 2) - 2
+    ])
+  )
 }

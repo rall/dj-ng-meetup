@@ -1,0 +1,60 @@
+{
+    "risks": [
+        {
+            "name": "first risk",
+            "id": 1
+        },
+        {
+            "name": "falling off ladders",
+            "id": 2
+        },
+        {
+            "name": "snakes",
+            "id": 3
+        },
+        {
+            "name": "risk #4",
+            "id": 4
+        },
+        {
+            "name": "fifth risk",
+            "id": 5
+        }
+    ],
+    "controls": [
+        {
+            "name": "parachutes",
+            "id": 1
+        },
+        {
+            "name": "rubber soles",
+            "id": 2
+        },
+        {
+            "name": "hard hats",
+            "id": 3
+        },
+        {
+            "name": "bulletproof vests",
+            "id": 4
+        }
+    ],    
+    "stripes": [
+        {
+            "riskId": 1,
+            "controlId": 3
+        },
+        {
+            "riskId": 1,
+            "controlId": 4
+        },
+        {
+            "riskId": 4,
+            "controlId": 2
+        },
+        {
+            "riskId": 5,
+            "controlId": 1
+        }
+    ]
+}

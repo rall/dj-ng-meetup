@@ -5,9 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LineComponent } from './mapper/line/line.component';
-import { RiskComponent } from './mapper/risk/risk.component';
+import { RiskComponent } from './mapper/mappable-item/risk/risk.component';
 import { MapperComponent } from './mapper/mapper.component';
-import { ControlComponent } from './mapper/control/control.component';
+import { ControlComponent } from './mapper/mappable-item/control/control.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule],

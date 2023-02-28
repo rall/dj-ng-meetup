@@ -1,28 +1,11 @@
-<div #linesContainer></div>
-
 <ol>
-    <!-- <li *ngFor="let risk of risks$ | async">
-        <app-risk id="risk.id">
-            {{ risk.name }}
-        </app-risk>
-    </li> -->
-    <li>
-        <app-risk>
-            risk 2
-        </app-risk>
+    <li *ngFor="let risk of risk$ | async">
+        <app-risk [risk]="risk" />
     </li>
 </ol>
 
 <ol>
-    <li>
-        <app-control>
-            control 1
-        </app-control>
-    </li>
-    <li>
-        <app-control>
-            control 2
-        </app-control>
+    <li *ngFor="let control of control$ | async">
+        <app-control [control]="control" />
     </li>
 </ol>
-

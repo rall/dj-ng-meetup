@@ -11,8 +11,7 @@ li span {
 }
 
 :host {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   border: 1px solid green;
-  width: 400px;
-  height: 400px;
 }
