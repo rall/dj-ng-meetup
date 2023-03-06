@@ -1,11 +1,11 @@
-<ol>
+<ul>
     <li *ngFor="let risk of risk$ | async">
-        <app-risk [risk]="risk" />
+        <app-mappable class="risk" [entity]="risk" />
     </li>
-</ol>
+</ul>
 
-<ol>
+<ul>
     <li *ngFor="let control of control$ | async">
-        <app-control [control]="control" />
+        <app-mappable class="control" [entity]="control" />
     </li>
-</ol>
+</ul>

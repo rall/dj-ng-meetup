@@ -1,45 +1,40 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { debounceTime, fromEvent, map, merge, ReplaySubject, share, shareReplay, Subject, switchMap } from 'rxjs';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { debounceTime, fromEvent, map, merge, mergeWith, ReplaySubject, Subject, switchMap, takeUntil } from 'rxjs';
+import { Risk, Control } from 'src/app/mapping.service';
+import { Coordinates } from '../coordinate.service';
 
 @Component({
-  template: ''
+  selector: 'app-mappable',
+  templateUrl: './mappable-item.component.html',
+  styleUrls: ['./mappable-item.component.css'],
 })
 export class MappableItemComponent {
   @ViewChild("handle") set handle(handle: ElementRef<HTMLDivElement>) {
-    fromEvent(handle.nativeElement, "mouseover").pipe(
-      map(_ => `over ${Date.now()}`),
-    ).subscribe(this.mouseOver$)
-    fromEvent(handle.nativeElement, "mouseout").pipe(
-      map(_ => `out ${Date.now()}`),
-    ).subscribe(this.mouseOut$)
     this.nativeElement$.next(handle.nativeElement)
   }
 
-  mouseOver$ = new Subject<string>
-  mouseOut$ = new Subject<string>
+  @Input() entity: Risk | Control;
 
-  private nativeElement$ = new ReplaySubject<HTMLDivElement>(1);
+  private destroyed = new Subject<void>()
+
+  nativeElement$ = new ReplaySubject<HTMLDivElement>(1);
 
   private resize$ = fromEvent(window, 'resize').pipe(
-    debounceTime(10)
+    debounceTime(10),
+    takeUntil(this.destroyed),
   )
 
   private scroll$ = fromEvent(window, 'scroll').pipe(
-    debounceTime(10)
+    debounceTime(10),
+    takeUntil(this.destroyed),
   )
 
-  private nativeElementAfterRedraw$ = merge(this.resize$, this.scroll$).pipe(
+  coordinate$ = merge(this.resize$, this.scroll$).pipe(
     switchMap(_ => this.nativeElement$),
-  )
-
-  private element$ = merge(this.nativeElement$, this.nativeElementAfterRedraw$).pipe(
-    shareReplay(1)
-  )
-
-  coordinate$ = this.element$.pipe(
-    map<HTMLDivElement, [number, number]>(element => [
-      element.offsetTop + (element.offsetHeight / 2) - 2,
-      element.offsetLeft + (element.offsetWidth / 2) - 2
+    mergeWith(this.nativeElement$),
+    map<HTMLDivElement, Coordinates>(element => [
+      element.offsetLeft + (element.offsetWidth / 2),
+      element.offsetTop + (element.offsetHeight / 2)
     ])
   )
 }

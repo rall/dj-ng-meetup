@@ -1,16 +1,18 @@
-import { HttpClient, ɵHttpInterceptorHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { from, switchMap } from 'rxjs';
 
 interface RiskOrControl {
   name: string
-  id: number
+  id: string
+  type: 'risk' | 'control'
 }
 
 export interface Risk extends RiskOrControl {}
 export interface Control extends RiskOrControl {}
-export interface Stripe {
-  riskId: number
-  controlId: number
+export type Stripe = {
+  riskId: string
+  controlId: string
 }
 
 @Injectable({
@@ -31,6 +33,8 @@ export class MappingService {
   }
 
   get stripes() {
-    return this.http.get<Stripe[]>(`${this.url}/stripes`)
+    return this.http.get<Stripe[]>(`${this.url}/stripes`).pipe(
+      switchMap(stripes => from(stripes))
+    )
   }
 }

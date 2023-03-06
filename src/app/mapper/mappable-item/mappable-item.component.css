@@ -1,15 +1,35 @@
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+span {
+  padding: 1rem;
+}
+
 .handleContainer {
-    cursor: grab;
-    padding: 0 0.5rem;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-  }
-  
-  .handle {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 100%;
-    border: 1px solid rgba(179, 179, 179, 0.397);
-  }
-  
+  cursor: grab;
+  padding: 0 0.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+.handle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
+  border: 1px solid rgba(179, 179, 179, 0.397);
+}
+
+:host.control {
+  flex-direction: row-reverse;
+}
+
+.control span {
+  text-align: right;
+}
+

@@ -5,13 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LineComponent } from './mapper/line/line.component';
-import { RiskComponent } from './mapper/mappable-item/risk/risk.component';
 import { MapperComponent } from './mapper/mapper.component';
-import { ControlComponent } from './mapper/mappable-item/control/control.component';
+import { MappableItemComponent } from './mapper/mappable-item/mappable-item.component';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  declarations: [AppComponent, LineComponent, RiskComponent, MapperComponent, ControlComponent],
+  declarations: [AppComponent, LineComponent, MappableItemComponent, MapperComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

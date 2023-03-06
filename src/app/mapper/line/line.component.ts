@@ -1,53 +1,63 @@
-import { Component, Directive, HostBinding, Input, OnInit } from '@angular/core';
-import { map, Observable, ReplaySubject, shareReplay, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { combineLatest, fromEvent, map, ReplaySubject, startWith, Subject, switchMap, takeUntil } from 'rxjs';
+import { Coordinates } from '../coordinate.service';
 
 @Component({
   templateUrl: './line.component.svg',
   selector: 'svg',
   styleUrls: ['./line.component.css']
 })
-export class LineComponent {
-  private id = 0
-  containerId = `svg-line-${this.id++}` 
-  
-  private originSubject = new ReplaySubject<Observable<[number, number]>>(1)
-  @Input() set origin$(origin$: Observable<[number, number]>) {
-    console.log('set origin', origin$)
-    this.originSubject.next(origin$)
+export class LineComponent implements OnDestroy {
+  originSubject = new ReplaySubject<Coordinates>(1)
+  destinationSubject = new ReplaySubject<Coordinates>(1)
+
+  destroyed = new Subject<void>()
+  private nativeElement$ = new Subject<SVGLineElement>()
+
+  @ViewChild('line', { read: ElementRef }) set line(line: ElementRef<SVGLineElement>) {
+    this.nativeElement$.next(line.nativeElement)
   }
 
-  private destinationSubject = new ReplaySubject<Observable<[number, number]>>(1)
-  @Input() set destination$(dest$: Observable<[number, number]>) {
-    this.destinationSubject.next(dest$)
+  @Input() set origin(origin: Coordinates) {
+    this.originSubject.next(origin)
   }
+  @Input() set destination(destination: Coordinates) {
+    this.destinationSubject.next(destination)
+  }
+  @Input() strokeWidth = 4
 
   x1$ = this.originSubject.pipe(
-    switchMap((origin$) => origin$.pipe(
-      map(([x]) => x)
-    )),
-    tap(console.log),
-    shareReplay(1),
+    map(([x]) => x - (this.strokeWidth / 2)),
   )
+
   y1$ = this.originSubject.pipe(
-    switchMap((origin$) => origin$.pipe(
-      map(([_, y]) => y)
-    )),
-    tap(console.log),
+    map(([_, y]) => y - (this.strokeWidth / 2)),
   )
+
   x2$ = this.destinationSubject.pipe(
-    switchMap((destination$) => destination$.pipe(
-      map(([x]) => x)
-    )),
-    tap(console.log),
+    map(([x]) => x - (this.strokeWidth / 2)),
   )
+
   y2$ = this.destinationSubject.pipe(
-    switchMap((destination$) => destination$.pipe(
-      map(([_, y]) => y)
-    )),
-    tap(console.log),
+    map(([_, y]) => y - (this.strokeWidth / 2)),
+  )
+
+  visibilitie$ = combineLatest([this.x1$, this.x2$, this.y1$, this.y2$]).pipe(
+    map(_ => "visible"),
+    startWith("collapse"),
   )
 
   @HostBinding("attr.stroke") stroke = "orange"
-  @HostBinding("attr.stroke-width") strokeWidth = "4px"
+  @HostBinding("attr.stroke-width") widthAsString = `${this.strokeWidth}px`
 
+  @Output() deleteMe = this.nativeElement$.pipe(
+    switchMap(element => fromEvent(element, 'click').pipe(
+      takeUntil(this.destroyed),
+      map(_ => this),
+    ))
+  )
+
+  ngOnDestroy() {
+    this.destroyed.next()
+  }
 }

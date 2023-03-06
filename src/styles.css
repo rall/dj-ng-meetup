@@ -1,1 +1,7 @@
-/* Add application styles & imports to this file! */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}

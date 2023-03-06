@@ -1,60 +1,69 @@
 {
     "risks": [
         {
-            "name": "first risk",
-            "id": 1
+            "name": "First risk",
+            "id": "r1",
+            "type": "risk"
         },
         {
-            "name": "falling off ladders",
-            "id": 2
+            "name": "Falling off ladders",
+            "id": "r2",
+            "type": "risk"
         },
         {
-            "name": "snakes",
-            "id": 3
+            "name": "Snakes",
+            "id": "r3",
+            "type": "risk"
         },
         {
-            "name": "risk #4",
-            "id": 4
+            "name": "Risk #4",
+            "id": "r4",
+            "type": "risk"
         },
         {
-            "name": "fifth risk",
-            "id": 5
+            "name": "Fifth risk",
+            "id": "r5",
+            "type": "risk"
         }
     ],
     "controls": [
         {
-            "name": "parachutes",
-            "id": 1
+            "name": "Parachutes",
+            "id": "c1",
+            "type": "control"
         },
         {
-            "name": "rubber soles",
-            "id": 2
+            "name": "Rubber soles",
+            "id": "c2",
+            "type": "control"
         },
         {
-            "name": "hard hats",
-            "id": 3
+            "name": "Hard hats",
+            "id": "c3",
+            "type": "control"
         },
         {
-            "name": "bulletproof vests",
-            "id": 4
+            "name": "Bulletproof vests",
+            "id": "c4",
+            "type": "control"
         }
     ],    
     "stripes": [
         {
-            "riskId": 1,
-            "controlId": 3
+            "riskId": "r1",
+            "controlId": "c3"
         },
         {
-            "riskId": 1,
-            "controlId": 4
+            "riskId": "r5",
+            "controlId": "c1"
         },
         {
-            "riskId": 4,
-            "controlId": 2
+            "riskId": "r1",
+            "controlId": "c4"
         },
         {
-            "riskId": 5,
-            "controlId": 1
+            "riskId": "r4",
+            "controlId": "c2"
         }
     ]
 }
